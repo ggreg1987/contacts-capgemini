@@ -25,6 +25,9 @@ public class PhoneServiceImpl implements PhoneService {
 
     @Override
     public Phone save(Phone phone) {
+        if(phone == null ) {
+            throw new RuntimeException("Cant be save an empty Phone");
+        }
         return repository.save(phone);
     }
 

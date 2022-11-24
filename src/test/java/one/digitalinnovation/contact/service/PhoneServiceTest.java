@@ -6,15 +6,20 @@ import one.digitalinnovation.contact.domain.enums.PhoneType;
 import one.digitalinnovation.contact.domain.repository.PhoneRepository;
 import one.digitalinnovation.contact.domain.rest.services.PhoneService;
 import one.digitalinnovation.contact.domain.rest.services.impl.PhoneServiceImpl;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -68,6 +73,17 @@ public class PhoneServiceTest {
         assertThat(phoneTest.getNumber()).isEqualTo(phoneReturned.getNumber());
         assertThat(phoneTest.getPerson().getCpf()).isEqualTo(phoneReturned.getPerson().getCpf());
         assertThat(phoneTest.getType().name()).isEqualTo(phoneReturned.getType().name());
+
+    }
+
+    @Test
+    @DisplayName("Cant save a null phone")
+    public void cantSavePhone() {
+        Phone phone = createPhone();
+
+        when(phoneRepository.save(Mockito.isNull())).thenReturn(null);
+
+        Mockito.verify(phoneRepository,never()).save(phone);
 
     }
 }
