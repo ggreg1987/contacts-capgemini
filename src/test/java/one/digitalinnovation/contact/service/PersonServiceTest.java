@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -70,4 +71,17 @@ public class PersonServiceTest {
         verify(personRepository,never()).save(person);
     }
 
+    @Test
+    @DisplayName("Should show a Person by cpf")
+    public void findByIdTest() {
+        Person person = createPerson();
+
+
+        when(personService.findById(Mockito.anyString())).thenReturn(Optional.of(person));
+
+        Optional<Person> personTest = personService.findById(person.getCpf());
+
+        assertThat(personTest.isPresent()).isTrue();
+        assertThat(personTest.get().getCpf()).isEqualTo(person.getCpf());
+    }
 }
