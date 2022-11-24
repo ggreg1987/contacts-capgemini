@@ -12,9 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -102,7 +105,7 @@ public class PhoneServiceTest {
 
     @Test
     @DisplayName("Cant find phone when id it was null")
-    public void cantFindById() {
+    public void cantFindNullById() {
         Long id = 1L;
 
         when(phoneRepository.findById(Mockito.isNull())).thenReturn(Optional.empty());
@@ -110,5 +113,23 @@ public class PhoneServiceTest {
         Optional<Phone> service = phoneService.findById(id);
         assertThat(service.isPresent()).isFalse();
 
+    }
+
+    @Test
+    @DisplayName("Shoul all phones pageable")
+    public void findPhone() {
+        Phone phone = createPhone();
+        PageRequest pageRequest = PageRequest.of(2, 10);
+        List<Phone> phoneList = Arrays.asList(phone);
+        PageImpl<Phone> page = new PageImpl<>(phoneList, pageRequest, 10);
+        when(phoneRepository.findAll(Mockito.any(Example.class), Mockito.any(Pageable.class)))
+                .thenReturn(page);
+
+        Page<Phone> phonePage = phoneService.find(phone, pageRequest);
+
+        assertThat(phonePage.getTotalElements()).isEqualTo(21);
+        assertThat(phonePage.getContent()).isEqualTo(phoneList);
+        assertThat(phonePage.getPageable().getPageNumber()).isEqualTo(2);
+        assertThat(phonePage.getPageable().getPageSize()).isEqualTo(10);
     }
 }

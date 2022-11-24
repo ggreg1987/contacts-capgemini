@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+import static org.springframework.data.domain.ExampleMatcher.StringMatcher.CONTAINING;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
@@ -45,7 +46,7 @@ public class PhoneServiceImpl implements PhoneService {
         ExampleMatcher exampleMatcher = ExampleMatcher
                 .matching()
                 .withIgnoreCase()
-                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+                .withStringMatcher(CONTAINING);
 
         Example example = Example.of(phone,exampleMatcher);
 
