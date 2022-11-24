@@ -33,6 +33,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Optional<Person> findById(String cpf) {
+        if(!repository.existsByCpf(cpf)) {
+            throw new IllegalArgumentException("Error, wrong cpf");
+        }
         return repository.findByCpf(cpf);
     }
 

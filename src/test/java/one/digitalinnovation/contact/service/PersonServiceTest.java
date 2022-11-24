@@ -76,12 +76,23 @@ public class PersonServiceTest {
     public void findByIdTest() {
         Person person = createPerson();
 
-
         when(personService.findById(Mockito.anyString())).thenReturn(Optional.of(person));
 
         Optional<Person> personTest = personService.findById(person.getCpf());
-
         assertThat(personTest.isPresent()).isTrue();
         assertThat(personTest.get().getCpf()).isEqualTo(person.getCpf());
+    }
+
+    @Test
+    @DisplayName("Cant find wrong cpf")
+    public void cantFindByIdTest() {
+        Person person = new Person();
+        person.setCpf("68029446004");
+
+        when(personRepository.existsByCpf(Mockito.anyString())).thenReturn(false);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> personService.findById(person.getCpf()));
+
     }
 }
