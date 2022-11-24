@@ -1,6 +1,7 @@
 package one.digitalinnovation.contact.domain.rest.services;
 
 import one.digitalinnovation.contact.domain.entities.Phone;
+import one.digitalinnovation.contact.domain.enums.PhoneType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,4 +14,5 @@ public interface PhoneService {
     Page<Phone> find(Phone phone, Pageable pageable);
     void delete(Phone phone);
     Phone update(Phone phone);
+    void phoneType(Long id, PhoneType type);
 }
