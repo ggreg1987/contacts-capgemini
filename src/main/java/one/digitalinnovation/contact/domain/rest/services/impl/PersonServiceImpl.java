@@ -55,8 +55,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void delete(Person person) {
-        if(person == null || person.getCpf() == null) {
-            throw new IllegalArgumentException("Cpf cant be null");
+        if(!repository.existsByCpf(person.getCpf())) {
+            throw new IllegalArgumentException("Error, wrong cpf");
         }
         repository.delete(person);
     }

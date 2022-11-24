@@ -11,17 +11,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -115,5 +113,17 @@ public class PersonServiceTest {
         assertThat(personPage.getContent()).isEqualTo(personList);
         assertThat(personPage.getPageable().getPageNumber()).isEqualTo(0);
         assertThat(personPage.getPageable().getPageSize()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("Should delete a Person")
+    public void deleteTest() {
+        Person person = new Person();
+        person.setCpf("68029446004");
+
+        when(personRepository.existsByCpf(Mockito.anyString())).thenReturn(true);
+        assertDoesNotThrow(() -> personService.delete(person));
+
+        verify(personRepository,times(1)).delete(person);
     }
 }
