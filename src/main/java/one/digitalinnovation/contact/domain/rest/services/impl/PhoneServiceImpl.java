@@ -33,6 +33,9 @@ public class PhoneServiceImpl implements PhoneService {
 
     @Override
     public Optional<Phone> findById(Long id) {
+        if(id == null) {
+            throw new RuntimeException("Error, cant find phone");
+        }
         return repository.findById(id);
     }
 

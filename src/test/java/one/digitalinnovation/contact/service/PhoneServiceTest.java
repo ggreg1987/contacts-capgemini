@@ -6,7 +6,6 @@ import one.digitalinnovation.contact.domain.enums.PhoneType;
 import one.digitalinnovation.contact.domain.repository.PhoneRepository;
 import one.digitalinnovation.contact.domain.rest.services.PhoneService;
 import one.digitalinnovation.contact.domain.rest.services.impl.PhoneServiceImpl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +18,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -101,6 +98,17 @@ public class PhoneServiceTest {
         assertThat(service.get().getPerson()).isEqualTo(phone.getPerson());
 
         verify(phoneRepository, times(1)).findById(phone.getId());
+    }
+
+    @Test
+    @DisplayName("Cant find phone when id it was null")
+    public void cantFindById() {
+        Long id = 1L;
+
+        when(phoneRepository.findById(Mockito.isNull())).thenReturn(Optional.empty());
+
+        Optional<Phone> service = phoneService.findById(id);
+        assertThat(service.isPresent()).isFalse();
 
     }
 }
