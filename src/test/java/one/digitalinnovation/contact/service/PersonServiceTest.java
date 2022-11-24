@@ -10,12 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -94,5 +97,23 @@ public class PersonServiceTest {
         assertThrows(IllegalArgumentException.class,
                 () -> personService.findById(person.getCpf()));
 
+    }
+
+    @Test
+    @DisplayName("Should show all Persons")
+    public void findPersonTest() {
+        Person person = createPerson();
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        List<Person> personList = Arrays.asList(person);
+        PageImpl<Person> page = new PageImpl<>(personList, pageRequest, 10);
+
+        when(personRepository.findAll(any(Example.class), any(Pageable.class))).thenReturn(page);
+
+        Page<Person> personPage = personService.find(person, pageRequest);
+
+        assertThat(personPage.getTotalElements()).isEqualTo(10);
+        assertThat(personPage.getContent()).isEqualTo(personList);
+        assertThat(personPage.getPageable().getPageNumber()).isEqualTo(0);
+        assertThat(personPage.getPageable().getPageSize()).isEqualTo(10);
     }
 }
