@@ -50,6 +50,13 @@ public class PhoneServiceImpl implements PhoneService {
         repository.delete(phone);
     }
 
+    @Override
+    public Phone update(Phone phone) {
+        if(phone == null || phone.getId() == null) {
+            throw new IllegalArgumentException("Phone cant be null");
+        }
+        return repository.save(phone);
+    }
 
 
 }

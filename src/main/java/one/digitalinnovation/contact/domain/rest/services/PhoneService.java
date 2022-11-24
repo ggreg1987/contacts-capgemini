@@ -12,5 +12,5 @@ public interface PhoneService {
     Optional<Phone> findById(Long id);
     Page<Phone> find(Phone phone, Pageable pageable);
     void delete(Phone phone);
-
+    Phone update(Phone phone);
 }
