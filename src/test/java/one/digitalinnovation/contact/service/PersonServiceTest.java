@@ -18,7 +18,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -53,6 +54,20 @@ public class PersonServiceTest {
         Person personTest = personService.save(person);
 
         assertThat(personTest.getCpf()).isEqualTo(person.getCpf());
+    }
+
+    @Test
+    @DisplayName("Cant save duplicated cpf")
+    public void cantSavePersonTest() {
+        Person person = new Person();
+        person.setCpf("68029446004");
+
+        when(personRepository.existsByCpf("68029446004")).thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> personService.save(person));
+
+        verify(personRepository,never()).save(person);
     }
 
 }

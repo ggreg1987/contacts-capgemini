@@ -25,7 +25,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person save(Person person) {
         if(repository.existsByCpf(person.getCpf())) {
-            throw new RuntimeException("Duplicated CPF");
+            throw new IllegalArgumentException("Duplicated CPF");
         }
 
         return repository.save(person);
