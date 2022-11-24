@@ -2,8 +2,10 @@ package one.digitalinnovation.contact.domain.rest;
 
 import lombok.RequiredArgsConstructor;
 import one.digitalinnovation.contact.domain.entities.Phone;
+import one.digitalinnovation.contact.domain.enums.PhoneType;
 import one.digitalinnovation.contact.domain.repository.PhoneRepository;
 import one.digitalinnovation.contact.domain.rest.dto.PhoneDTO;
+import one.digitalinnovation.contact.domain.rest.dto.PhoneTypeDTO;
 import one.digitalinnovation.contact.domain.rest.services.PhoneService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -24,7 +26,6 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 public class PhoneController {
 
-    private final PhoneRepository repository;
     private final PhoneService service;
     private final ModelMapper modelMapper;
 
@@ -59,5 +60,19 @@ public class PhoneController {
         Phone phone = service.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
         service.delete(phone);
+    }
+    @PutMapping("{id}")
+    public PhoneDTO update(@PathVariable Long id,@RequestBody PhoneDTO dto) {
+        return service.findById(id)
+                .map(phone -> {
+                    phone.setId(dto.getId());
+                    service.update(phone);
+                    return modelMapper.map(phone, PhoneDTO.class);
+                }).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+    }
+    @PatchMapping("{id}")
+    public void type(@PathVariable Long id,@RequestBody PhoneTypeDTO dto) {
+        String typeDTO = dto.getTypeDTO();
+        service.phoneType(id, PhoneType.valueOf(typeDTO));
     }
 }
