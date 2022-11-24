@@ -52,4 +52,12 @@ public class PersonServiceImpl implements PersonService {
         return repository.findAll(example,pageable);
 
     }
+
+    @Override
+    public void delete(Person person) {
+        if(person == null || person.getCpf() == null) {
+            throw new IllegalArgumentException("Cpf cant be null");
+        }
+        repository.delete(person);
+    }
 }
