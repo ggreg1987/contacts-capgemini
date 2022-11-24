@@ -21,9 +21,9 @@ public class PersonServiceImpl implements PersonService {
             throw new RuntimeException("Duplicated CPF");
         }
 
-        person.setBirthDate(LocalDate.parse(person.getBirthDate()
-                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
-        
+        LocalDate.parse(person.getBirthDate()
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
         return repository.save(person);
     }
 }
