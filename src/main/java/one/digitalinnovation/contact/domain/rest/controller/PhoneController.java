@@ -1,4 +1,4 @@
-package one.digitalinnovation.contact.domain.rest;
+package one.digitalinnovation.contact.domain.rest.controller;
 import lombok.RequiredArgsConstructor;
 import one.digitalinnovation.contact.domain.entities.Phone;
 import one.digitalinnovation.contact.domain.enums.PhoneType;
