@@ -160,4 +160,15 @@ public class PhoneServiceTest {
 
         verify(phoneRepository,never()).save(phone);
     }
+
+    @Test
+    @DisplayName("Should delete a phone")
+    public void deleteTest() {
+        Phone phone = createPhone();
+
+
+        org.junit.jupiter.api.Assertions.assertDoesNotThrow(() -> phoneService.delete(phone));
+
+        Mockito.verify(phoneRepository,Mockito.times(1)).delete(phone);
+    }
 }
