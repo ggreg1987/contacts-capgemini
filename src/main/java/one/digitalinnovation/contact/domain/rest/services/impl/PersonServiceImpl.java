@@ -6,6 +6,9 @@ import one.digitalinnovation.contact.domain.repository.PersonRepository;
 import one.digitalinnovation.contact.domain.rest.services.PersonService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Service
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
@@ -17,6 +20,10 @@ public class PersonServiceImpl implements PersonService {
         if(repository.existsByCpf(person.getCpf())) {
             throw new RuntimeException("Duplicated CPF");
         }
+
+        person.setBirthDate(LocalDate.parse(person.getBirthDate()
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+        
         return repository.save(person);
     }
 }
