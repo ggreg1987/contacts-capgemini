@@ -8,8 +8,9 @@ import one.digitalinnovation.contact.domain.rest.services.PhoneService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("api/phones")
@@ -26,5 +27,12 @@ public class PhoneController {
         Phone phone = modelMapper.map(dto, Phone.class);
         Phone save = service.save(phone);
         return modelMapper.map(save, PhoneDTO.class);
+    }
+    @GetMapping("{id}")
+    @ResponseStatus(OK)
+    public PhoneDTO findById(@PathVariable Long id) {
+        return service.findById(id)
+                .map(phone -> modelMapper.map(phone, PhoneDTO.class))
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 }
