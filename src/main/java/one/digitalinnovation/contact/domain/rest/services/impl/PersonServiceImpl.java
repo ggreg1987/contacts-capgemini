@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,5 +26,10 @@ public class PersonServiceImpl implements PersonService {
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
         return repository.save(person);
+    }
+
+    @Override
+    public Optional<Person> findById(String cpf) {
+        return repository.findByCpf(cpf);
     }
 }
