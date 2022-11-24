@@ -60,4 +60,12 @@ public class PersonServiceImpl implements PersonService {
         }
         repository.delete(person);
     }
+
+    @Override
+    public Person update(Person person) {
+        if(person == null || person.getCpf() == null) {
+            throw new IllegalArgumentException("Cpf cant be null");
+        }
+        return repository.save(person);
+    }
 }
