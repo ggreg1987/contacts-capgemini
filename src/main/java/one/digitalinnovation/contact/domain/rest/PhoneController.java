@@ -1,9 +1,7 @@
 package one.digitalinnovation.contact.domain.rest;
-
 import lombok.RequiredArgsConstructor;
 import one.digitalinnovation.contact.domain.entities.Phone;
 import one.digitalinnovation.contact.domain.enums.PhoneType;
-import one.digitalinnovation.contact.domain.repository.PhoneRepository;
 import one.digitalinnovation.contact.domain.rest.dto.PhoneDTO;
 import one.digitalinnovation.contact.domain.rest.dto.PhoneTypeDTO;
 import one.digitalinnovation.contact.domain.rest.services.PhoneService;
@@ -11,14 +9,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
