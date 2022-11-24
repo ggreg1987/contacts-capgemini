@@ -7,10 +7,11 @@ import one.digitalinnovation.contact.domain.rest.services.PersonService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.format.DateTimeFormatter;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/persons")
@@ -28,5 +29,13 @@ public class PersonController {
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         Person save = service.save(person);
         return modelMapper.map(save,PersonDTO.class);
+    }
+
+    @GetMapping("{cpf}")
+    @ResponseStatus(OK)
+    public PersonDTO findById(@PathVariable String cpf) {
+        return service.findById(cpf)
+                .map(person -> modelMapper.map(person, PersonDTO.class))
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 }
