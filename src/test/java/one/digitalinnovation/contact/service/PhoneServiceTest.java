@@ -117,7 +117,7 @@ public class PhoneServiceTest {
 
     @Test
     @DisplayName("Shoul all phones pageable")
-    public void findPhone() {
+    public void findPhoneTest() {
         Phone phone = createPhone();
         PageRequest pageRequest = PageRequest.of(2, 10);
         List<Phone> phoneList = Arrays.asList(phone);
@@ -131,5 +131,25 @@ public class PhoneServiceTest {
         assertThat(phonePage.getContent()).isEqualTo(phoneList);
         assertThat(phonePage.getPageable().getPageNumber()).isEqualTo(2);
         assertThat(phonePage.getPageable().getPageSize()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("Should update the phone")
+    public void updateTest() {
+        Long id = 1L;
+
+        Phone oldPhone = Phone.builder().id(id).build();
+        Phone update = createPhone();
+
+        update.setId(id);
+
+        when(phoneRepository.save(oldPhone)).thenReturn(update);
+
+        Phone phone = phoneService.update(oldPhone);
+
+        assertThat(phone.getId()).isEqualTo(update.getId());
+        assertThat(phone.getNumber()).isEqualTo(update.getNumber());
+        assertThat(phone.getType().name()).isEqualTo(update.getType().name());
+
     }
 }
