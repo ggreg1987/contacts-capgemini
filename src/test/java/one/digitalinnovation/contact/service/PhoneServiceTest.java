@@ -1,4 +1,5 @@
 package one.digitalinnovation.contact.service;
+
 import one.digitalinnovation.contact.domain.entities.Person;
 import one.digitalinnovation.contact.domain.entities.Phone;
 import one.digitalinnovation.contact.domain.enums.PhoneType;
@@ -9,15 +10,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -78,8 +82,8 @@ public class PhoneServiceTest {
     @DisplayName("Cant save a null phone")
     public void cantSavePhone() {
         Phone phone = createPhone();
-        when(phoneRepository.save(Mockito.isNull())).thenReturn(null);
-        Mockito.verify(phoneRepository,never()).save(phone);
+        when(phoneRepository.save(isNull())).thenReturn(null);
+        verify(phoneRepository,never()).save(phone);
     }
 
     @Test
@@ -105,7 +109,7 @@ public class PhoneServiceTest {
     public void cantFindNullById() {
         Long id = 1L;
 
-        when(phoneRepository.findById(Mockito.isNull())).thenReturn(Optional.empty());
+        when(phoneRepository.findById(isNull())).thenReturn(Optional.empty());
 
         Optional<Phone> service = phoneService.findById(id);
         assertThat(service.isPresent()).isFalse();
@@ -119,7 +123,7 @@ public class PhoneServiceTest {
         PageRequest pageRequest = PageRequest.of(2, 10);
         List<Phone> phoneList = Arrays.asList(phone);
         PageImpl<Phone> page = new PageImpl<>(phoneList, pageRequest, 10);
-        when(phoneRepository.findAll(Mockito.any(Example.class), Mockito.any(Pageable.class)))
+        when(phoneRepository.findAll(any(Example.class), any(Pageable.class)))
                 .thenReturn(page);
 
         Page<Phone> phonePage = phoneService.find(phone, pageRequest);
@@ -155,7 +159,7 @@ public class PhoneServiceTest {
     public void cantUpdateTest() {
         var phone = new Phone();
 
-        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> phoneService.update(phone));
 
         verify(phoneRepository,never()).save(phone);
@@ -167,8 +171,20 @@ public class PhoneServiceTest {
         Phone phone = createPhone();
 
 
-        org.junit.jupiter.api.Assertions.assertDoesNotThrow(() -> phoneService.delete(phone));
+        assertDoesNotThrow(() -> phoneService.delete(phone));
 
-        Mockito.verify(phoneRepository,Mockito.times(1)).delete(phone);
+        verify(phoneRepository, times(1)).delete(phone);
+    }
+
+
+    @Test
+    @DisplayName("Cant delete a phone")
+    public void cantDeleteTest() {
+        Phone phone = new Phone();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> phoneService.delete(phone));
+
+        verify(phoneRepository,never()).delete(phone);
     }
 }
