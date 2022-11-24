@@ -117,7 +117,7 @@ public class PersonServiceTest {
 
     @Test
     @DisplayName("Should delete a Person")
-    public void deleteTest() {
+    public void deletePersonTest() {
         Person person = new Person();
         person.setCpf("68029446004");
 
@@ -125,5 +125,17 @@ public class PersonServiceTest {
         assertDoesNotThrow(() -> personService.delete(person));
 
         verify(personRepository,times(1)).delete(person);
+    }
+
+    @Test
+    @DisplayName("Cant delete a person with invalid cpf")
+    public void cantDeletePersonTest() {
+        Person person = new Person();
+        person.setCpf("68029446004");
+
+        when(personRepository.existsByCpf(Mockito.anyString())).thenReturn(false);
+        assertThrows(IllegalArgumentException.class,() -> personService.delete(person));
+
+        verify(personRepository,never()).delete(person);
     }
 }
