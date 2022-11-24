@@ -44,7 +44,7 @@ public class PersonController {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
     @GetMapping
-    Page<PersonDTO> find(PersonDTO dto, Pageable pageable) {
+    public Page<PersonDTO> find(PersonDTO dto, Pageable pageable) {
         Person entity = modelMapper.map(dto, Person.class);
         Page<Person> personPage = service.find(entity, pageable);
         List<PersonDTO> dtoList = personPage.getContent()
@@ -52,5 +52,11 @@ public class PersonController {
                 .map(person -> modelMapper.map(person, PersonDTO.class))
                 .collect(Collectors.toList());
         return new PageImpl<>(dtoList,pageable,personPage.getTotalElements());
+    }
+    @DeleteMapping("{cpf}")
+    public void delete(@PathVariable String cpf) {
+        Person person = service.findById(cpf)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+        service.delete(person);
     }
 }
