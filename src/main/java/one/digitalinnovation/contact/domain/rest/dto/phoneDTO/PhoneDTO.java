@@ -1,4 +1,4 @@
-package one.digitalinnovation.contact.domain.rest.dto;
+package one.digitalinnovation.contact.domain.rest.dto.phoneDTO;
 
 import lombok.*;
 
