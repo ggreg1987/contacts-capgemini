@@ -3,10 +3,10 @@ package one.digitalinnovation.contact.domain.entities;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -25,4 +25,14 @@ public class Person implements Serializable {
 
     @Column(length = 20,nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "person",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Phone> phones;
+
+    public List<Phone> getPhones() {
+        if(this.phones.isEmpty()) {
+            this.phones = new ArrayList<>();
+        }
+        return this.phones;
+    }
 }

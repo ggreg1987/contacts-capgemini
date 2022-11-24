@@ -23,4 +23,8 @@ public class Phone implements Serializable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PhoneType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id")
+    private Person person;
 }
