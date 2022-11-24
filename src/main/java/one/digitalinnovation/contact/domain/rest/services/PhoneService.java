@@ -10,6 +10,7 @@ public interface PhoneService {
 
     Phone save(Phone phone);
     Optional<Phone> findById(Long id);
-
     Page<Phone> find(Phone phone, Pageable pageable);
+    void delete(Phone phone);
+
 }

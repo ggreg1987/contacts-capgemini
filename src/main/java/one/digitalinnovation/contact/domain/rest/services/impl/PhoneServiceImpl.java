@@ -40,6 +40,16 @@ public class PhoneServiceImpl implements PhoneService {
 
         return repository.findAll(example,pageable);
 
-
     }
+
+    @Override
+    public void delete(Phone phone) {
+        if(phone == null || phone.getId() == null) {
+           throw new IllegalArgumentException("Phone cant be null");
+        }
+        repository.delete(phone);
+    }
+
+
+
 }
