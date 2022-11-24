@@ -16,11 +16,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -80,10 +81,26 @@ public class PhoneServiceTest {
     @DisplayName("Cant save a null phone")
     public void cantSavePhone() {
         Phone phone = createPhone();
-
         when(phoneRepository.save(Mockito.isNull())).thenReturn(null);
-
         Mockito.verify(phoneRepository,never()).save(phone);
+    }
+
+    @Test
+    @DisplayName("Should find phone by if")
+    public void findByIdTest() {
+        Phone phone = createPhone();
+
+        when(phoneRepository.findById(phone.getId())).thenReturn(Optional.of(phone));
+
+        Optional<Phone> service = phoneService.findById(phone.getId());
+
+        assertThat(service.isPresent()).isTrue();
+        assertThat(service.get().getId()).isEqualTo(phone.getId());
+        assertThat(service.get().getNumber()).isEqualTo(phone.getNumber());
+        assertThat(service.get().getType()).isEqualTo(phone.getType());
+        assertThat(service.get().getPerson()).isEqualTo(phone.getPerson());
+
+        verify(phoneRepository, times(1)).findById(phone.getId());
 
     }
 }
