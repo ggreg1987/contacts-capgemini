@@ -59,4 +59,13 @@ public class PersonController {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
         service.delete(person);
     }
+    @PutMapping("{cpf}")
+    public PersonDTO update(@PathVariable String cpf,@RequestBody PersonDTO dto) {
+        return service.findById(cpf)
+                .map(person -> {
+                    person.setCpf(dto.getCpf());
+                    service.update(person);
+                    return modelMapper.map(person, PersonDTO.class);
+                }).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+    }
 }
