@@ -138,4 +138,19 @@ public class PersonServiceTest {
 
         verify(personRepository,never()).delete(person);
     }
+
+    @Test
+    @DisplayName("Should update a Person")
+    public void updatePersonTest() {
+        String cpf = "12263694056";
+        Person oldPerson = createPerson();
+        Person update = Person.builder().cpf(cpf).build();
+        oldPerson.setCpf(cpf);
+
+        when(personRepository.save(oldPerson)).thenReturn(update);
+        Person person = personService.update(oldPerson);
+
+        assertThat(person.getCpf()).isEqualTo(update.getCpf());
+
+    }
 }
