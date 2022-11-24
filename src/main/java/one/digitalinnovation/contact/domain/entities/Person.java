@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class Person implements Serializable {
 
     @Column(length = 20,nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private LocalDate birthDate;
 
     @OneToMany(mappedBy = "person",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Phone> phones;
