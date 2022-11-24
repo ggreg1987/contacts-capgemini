@@ -1,5 +1,4 @@
 package one.digitalinnovation.contact.service;
-
 import one.digitalinnovation.contact.domain.entities.Person;
 import one.digitalinnovation.contact.domain.entities.Phone;
 import one.digitalinnovation.contact.domain.enums.PhoneType;
@@ -15,11 +14,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -116,7 +113,7 @@ public class PhoneServiceTest {
     }
 
     @Test
-    @DisplayName("Shoul all phones pageable")
+    @DisplayName("Should show  all phones pageable")
     public void findPhoneTest() {
         Phone phone = createPhone();
         PageRequest pageRequest = PageRequest.of(2, 10);
@@ -151,5 +148,16 @@ public class PhoneServiceTest {
         assertThat(phone.getNumber()).isEqualTo(update.getNumber());
         assertThat(phone.getType().name()).isEqualTo(update.getType().name());
 
+    }
+
+    @Test
+    @DisplayName("Cant update with illegal id or null id")
+    public void cantUpdateTest() {
+        var phone = new Phone();
+
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class,
+                () -> phoneService.update(phone));
+
+        verify(phoneRepository,never()).save(phone);
     }
 }
