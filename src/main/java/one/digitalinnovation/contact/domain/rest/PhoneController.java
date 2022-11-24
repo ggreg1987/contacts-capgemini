@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
@@ -50,5 +51,13 @@ public class PhoneController {
                 .map(entity -> modelMapper.map(entity, PhoneDTO.class))
                 .collect(Collectors.toList());
         return new PageImpl<>(dtoList,pageable,phones.getTotalElements());
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        Phone phone = service.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+        service.delete(phone);
     }
 }
