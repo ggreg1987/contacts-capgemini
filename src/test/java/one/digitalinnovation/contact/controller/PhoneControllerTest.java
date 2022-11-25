@@ -220,4 +220,37 @@ public class PhoneControllerTest {
                 .perform(request)
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    @DisplayName("Should update the phone")
+    public void updatePhoneTest() throws Exception {
+        Long id = 1L;
+
+        String json = new ObjectMapper().writeValueAsString(createPhoneDTO());
+
+        Phone phone = createPhone();
+        phone.setId(id);
+
+        BDDMockito.given(service.findById(id)).willReturn(Optional.of(phone));
+
+        Phone update = createPhone();
+        update.setId(id);
+        update.setNumber("1111111");
+        update.setType(PhoneType.MOBILE);
+
+        BDDMockito.given(service.update(phone)).willReturn(update);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(PHONE_API.concat("/" + id))
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(json);
+
+        mockMvc
+                .perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("number").value(createPhoneDTO().getNumber()))
+                .andExpect(jsonPath("type").value(createPhoneDTO().getType()));
+
+    }
 }
