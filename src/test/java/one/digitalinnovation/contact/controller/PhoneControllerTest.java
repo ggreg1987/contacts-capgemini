@@ -102,4 +102,19 @@ public class PhoneControllerTest {
                 .andExpect(jsonPath("number").value(phoneDTO.getNumber()));
     }
 
+    @Test
+    public void createInvalidPhoneTest() throws Exception {
+
+        String json = new ObjectMapper().writeValueAsString(new PhoneDTO());
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(PHONE_API)
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .content(json);
+
+        mockMvc
+                .perform(request)
+                .andExpect(status().isBadRequest());
+    }
+
 }

@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.*;
@@ -25,7 +27,7 @@ public class PhoneController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public PhoneDTO create(@RequestBody PhoneDTO dto) {
+    public PhoneDTO create(@RequestBody @Valid PhoneDTO dto) {
         Phone phone = modelMapper.map(dto, Phone.class);
         Phone save = service.save(phone);
         return modelMapper.map(save, PhoneDTO.class);
