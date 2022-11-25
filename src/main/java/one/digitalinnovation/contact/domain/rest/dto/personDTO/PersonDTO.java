@@ -14,6 +14,6 @@ public class PersonDTO {
     private String cpf;
     private String name;
     private String email;
-    private String birthDay;
+    private String birthDate;
     private List<PhoneDTO> phoneDTOS;
 }

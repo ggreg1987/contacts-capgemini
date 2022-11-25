@@ -30,8 +30,6 @@ public class PersonController {
     @ResponseStatus(CREATED)
     public PersonDTO create(@RequestBody PersonDTO dto) {
         Person person = modelMapper.map(dto, Person.class);
-        dto.setBirthDay(person.getBirthDate()
-                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         Person save = service.save(person);
         return modelMapper.map(save,PersonDTO.class);
     }

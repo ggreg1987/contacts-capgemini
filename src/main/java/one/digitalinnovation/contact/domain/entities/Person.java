@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class Person implements Serializable {
     @Column(nullable = false)
     private LocalDate birthDate;
 
+
     @OneToMany(mappedBy = "person",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Phone> phones;
 
@@ -38,5 +40,9 @@ public class Person implements Serializable {
             this.phones = new ArrayList<>();
         }
         return this.phones;
+    }
+
+    public String getBirthDate() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
 }
