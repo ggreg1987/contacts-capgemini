@@ -65,7 +65,7 @@ public class PhoneServiceImpl implements PhoneService {
     @Override
     public Phone update(Phone phone) {
         if(phone == null || phone.getId() == null) {
-            throw new IllegalArgumentException("Phone cant be null");
+            throw new ResponseStatusException(NOT_FOUND);
         }
         return repository.save(phone);
     }

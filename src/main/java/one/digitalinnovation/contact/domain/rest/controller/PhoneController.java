@@ -58,7 +58,7 @@ public class PhoneController {
         service.delete(phone);
     }
     @PutMapping("{id}")
-    public PhoneDTO update(@PathVariable Long id,@RequestBody PhoneDTO dto) {
+    public PhoneDTO update(@PathVariable Long id,@RequestBody @Valid PhoneDTO dto) {
         return service.findById(id)
                 .map(phone -> {
                     phone.setId(dto.getId());

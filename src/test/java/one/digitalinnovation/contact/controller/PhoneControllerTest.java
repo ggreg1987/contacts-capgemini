@@ -251,6 +251,25 @@ public class PhoneControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("number").value(createPhoneDTO().getNumber()))
                 .andExpect(jsonPath("type").value(createPhoneDTO().getType()));
+    }
 
+    @Test
+    @DisplayName("Cant update phone with wrong id")
+    public void cantUpdatePhone() throws Exception {
+        Long id = 2L;
+
+        String json = new ObjectMapper().writeValueAsString(createPhoneDTO());
+
+        BDDMockito.given(service.findById(id)).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(PHONE_API.concat("/" + id))
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(json);
+
+        mockMvc
+                .perform(request)
+                .andExpect(status().isNotFound());
     }
 }
