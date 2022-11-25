@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -144,7 +148,41 @@ public class PhoneControllerTest {
                 .andExpect(jsonPath("id").value(id))
                 .andExpect(jsonPath("number").value(createPhoneDTO().getNumber()))
                 .andExpect(jsonPath("type").value(createPhoneDTO().getType()));
+    }
 
+    @Test
+    @DisplayName("Test find person pageable")
+    public void findPersonTest() throws Exception {
+
+        Long id = 1L;
+
+        Phone phone = Phone
+                .builder()
+                .id(id)
+                .type(createPhone().getType())
+                .number(createPhone().getNumber())
+                .person(createPerson())
+                .build();
+
+        BDDMockito.given(service.find(Mockito.any(Phone.class),
+                Mockito.any(Pageable.class)))
+                .willReturn(new PageImpl<Phone>(Arrays.asList(phone),
+                        PageRequest.of(0,20),1));
+
+        String query = String.format("?type=%s&number=%s&page=0&size=20",
+                phone.getType().name(),
+                phone.getNumber());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(PHONE_API.concat(query))
+                .accept(APPLICATION_JSON);
+
+        mockMvc
+                .perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("totalElements").value(1))
+                .andExpect(jsonPath("pageable.pageSize").value(20))
+                .andExpect(jsonPath("pageable.pageNumber").value(0));
 
     }
 }
