@@ -203,4 +203,21 @@ public class PhoneControllerTest {
                 .perform(request)
                 .andExpect(status().isNoContent());
     }
+
+
+    @Test
+    @DisplayName("Cant delete a phone")
+    public void cantDeletePhoneTest() throws Exception {
+
+        BDDMockito.given(service.findById(Mockito.anyLong()))
+                .willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .delete(PHONE_API.concat("/" + 1))
+                .accept(APPLICATION_JSON);
+
+        mockMvc
+                .perform(request)
+                .andExpect(status().isNotFound());
+    }
 }
