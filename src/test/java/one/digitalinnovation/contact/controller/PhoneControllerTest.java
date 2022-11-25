@@ -1,11 +1,9 @@
 package one.digitalinnovation.contact.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import one.digitalinnovation.contact.domain.entities.Person;
 import one.digitalinnovation.contact.domain.entities.Phone;
 import one.digitalinnovation.contact.domain.enums.PhoneType;
-import one.digitalinnovation.contact.domain.rest.controller.PersonController;
 import one.digitalinnovation.contact.domain.rest.controller.PhoneController;
 import one.digitalinnovation.contact.domain.rest.dto.phoneDTO.PhoneDTO;
 import one.digitalinnovation.contact.domain.rest.services.PersonService;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,7 +24,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -60,26 +56,32 @@ public class PhoneControllerTest {
                 .build();
     }
 
-    @Test
-    @DisplayName("Should save a phone")
-    public void createPhoneTest() throws Exception {
-
-        Person person = Person
+    private Person createPerson() {
+        return Person
                 .builder()
                 .cpf("73788507055")
                 .birthDate(LocalDate.now())
                 .email("gabriel@gmail")
                 .name("gabriel gregorio")
                 .build();
+    }
+        private Phone createPhone() {
+            return Phone
+                    .builder()
+                    .id(1L)
+                    .type(PhoneType.HOME)
+                    .number("323212321")
+                    .person(createPerson())
+                    .build();
+        }
+    @Test
+    @DisplayName("Should save a phone")
+    public void createPhoneTest() throws Exception {
+        Person person = createPerson();
+
         BDDMockito.given(personService.findById("73788507055")).willReturn(Optional.of(person));
 
-        Phone phone = Phone
-                .builder()
-                .id(1L)
-                .type(PhoneType.HOME)
-                .number("323212321")
-                .person(person)
-                .build();
+        Phone phone = createPhone();
         BDDMockito.given(service.save(Mockito.any(Phone.class))).willReturn(phone);
 
 
@@ -117,4 +119,32 @@ public class PhoneControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @DisplayName("Should show Phone by id")
+    public void findByIdTest() throws Exception {
+        Long id = 1L;
+        Phone phone = Phone
+                .builder()
+                .id(id)
+                .type(createPhone().getType())
+                .number(createPhone().getNumber())
+                .person(createPerson())
+                .build();
+
+        BDDMockito.given(service.findById(id)).willReturn(Optional.of(phone));
+
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(PHONE_API.concat("/" + id))
+                .accept(APPLICATION_JSON);
+
+        mockMvc
+                .perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(id))
+                .andExpect(jsonPath("number").value(createPhoneDTO().getNumber()))
+                .andExpect(jsonPath("type").value(createPhoneDTO().getType()));
+
+
+    }
 }
