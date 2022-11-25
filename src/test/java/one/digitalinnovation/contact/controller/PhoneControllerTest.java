@@ -151,8 +151,8 @@ public class PhoneControllerTest {
     }
 
     @Test
-    @DisplayName("Test find person pageable")
-    public void findPersonTest() throws Exception {
+    @DisplayName("Test find phone pageable")
+    public void findPhoneTest() throws Exception {
 
         Long id = 1L;
 
@@ -184,5 +184,23 @@ public class PhoneControllerTest {
                 .andExpect(jsonPath("pageable.pageSize").value(20))
                 .andExpect(jsonPath("pageable.pageNumber").value(0));
 
+    }
+
+    @Test
+    @DisplayName("Should delete a phone")
+    public void deletePhoneTest() throws Exception {
+
+        Phone phone = Phone.builder().id(1L).build();
+
+        BDDMockito.given(service.findById(Mockito.anyLong()))
+                .willReturn(Optional.of(phone));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .delete(PHONE_API.concat("/" + 1))
+                .accept(APPLICATION_JSON);
+
+        mockMvc
+                .perform(request)
+                .andExpect(status().isNoContent());
     }
 }
