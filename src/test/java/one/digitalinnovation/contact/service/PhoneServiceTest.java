@@ -23,6 +23,7 @@ import java.util.Optional;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
@@ -96,6 +97,18 @@ public class PhoneServiceTest {
 
         assertThat(serviceById.getNumber()).isEqualTo(phone.getNumber());
         assertThat(serviceById.getType().name()).isEqualTo(phone.getType().name());
+    }
+
+    @Test
+    @DisplayName("Cant find phone with wrong id")
+    public void cantFindByIdTest() {
+        Long id = 2L;
+
+        when(repository.existsById(id)).thenReturn(false);
+
+        assertThrows(ResponseStatusException.class,
+                () -> service.delete(id));
+
     }
 
 }
