@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static org.springframework.data.domain.ExampleMatcher.StringMatcher.CONTAINING;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Optional<Person> findById(String cpf) {
         if(!repository.existsByCpf(cpf)) {
-            throw new IllegalArgumentException("Error, wrong cpf");
+            throw new ResponseStatusException(BAD_REQUEST);
         }
         return repository.findByCpf(cpf);
     }

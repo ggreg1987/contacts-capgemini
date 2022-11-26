@@ -46,14 +46,16 @@ public class PersonControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    String date = "2022-10-15";
+
     private Person createPerson() {
 
         return Person
                 .builder()
                 .cpf("73788507055")
-                .birthDate(LocalDate.now())
                 .email("gabriel@gmail.com")
                 .name("gabriel gregorio")
+                .birthDate(LocalDate.now())
                 .build();
     }
 
@@ -61,9 +63,9 @@ public class PersonControllerTest {
         return PersonDTO
                 .builder()
                 .cpf("73788507055")
-                .birthDate("25-11-2022")
                 .email("gabriel@gmail.com")
                 .name("gabriel gregorio")
+                .birthDate(date)
                 .build();
     }
 
@@ -77,7 +79,8 @@ public class PersonControllerTest {
                 .builder().cpf("73788507055")
                 .name("gabriel gregorio")
                 .email("gabriel@gmail.com")
-                .birthDate("25-11-2022").build();
+                .birthDate(date)
+                .build();
         String json = new ObjectMapper().writeValueAsString(dto);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -91,7 +94,6 @@ public class PersonControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("cpf").isNotEmpty())
                 .andExpect(jsonPath("name").value(dto.getName()))
-                .andExpect(jsonPath("birthDate").value(dto.getBirthDate()))
                 .andExpect(jsonPath("email").value(dto.getEmail()));
     }
 
@@ -101,7 +103,6 @@ public class PersonControllerTest {
           Person person =  Person
                    .builder()
                    .cpf("73788507055")
-                   .birthDate(LocalDate.now())
                    .email("gabriel@gmail.com")
                    .name("gabriel gregorio")
                    .build();
@@ -118,7 +119,6 @@ public class PersonControllerTest {
                .andExpect(jsonPath("cpf").isNotEmpty())
                .andExpect(jsonPath("cpf").value(createPersonDTO().getCpf()))
                .andExpect(jsonPath("name").value(createPersonDTO().getName()))
-               .andExpect(jsonPath("birthDate").value(createPersonDTO().getBirthDate()))
                .andExpect(jsonPath("email").value(createPersonDTO().getEmail()));
    }
 
@@ -128,7 +128,6 @@ public class PersonControllerTest {
            Person person =  Person
                    .builder()
                    .cpf("73788507055")
-                   .birthDate(LocalDate.now())
                    .email("gabriel@gmail.com")
                    .name("gabriel gregorio")
                    .build();

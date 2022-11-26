@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -66,7 +67,7 @@ public class PersonServiceTest {
 
         when(personRepository.existsByCpf("68029446004")).thenReturn(true);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResponseStatusException.class,
                 () -> personService.save(person));
 
         verify(personRepository,never()).save(person);
@@ -75,9 +76,12 @@ public class PersonServiceTest {
     @Test
     @DisplayName("Should show a Person by cpf")
     public void findByIdTest() {
-        Person person = createPerson();
+        String cpf = "06422689403";
+        Person person = Person
+                .builder().cpf(cpf).build();
 
-        when(personService.findById(Mockito.anyString())).thenReturn(Optional.of(person));
+        when(personRepository.existsByCpf(cpf)).thenReturn(true);
+        when(personService.findById(cpf)).thenReturn(Optional.ofNullable(person));
 
         Optional<Person> personTest = personService.findById(person.getCpf());
         assertThat(personTest.isPresent()).isTrue();
@@ -92,7 +96,7 @@ public class PersonServiceTest {
 
         when(personRepository.existsByCpf(Mockito.anyString())).thenReturn(false);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ResponseStatusException.class,
                 () -> personService.findById(person.getCpf()));
 
     }
@@ -143,10 +147,12 @@ public class PersonServiceTest {
     @DisplayName("Should update a Person")
     public void updatePersonTest() {
         String cpf = "12263694056";
-        Person oldPerson = createPerson();
-        Person update = Person.builder().cpf(cpf).build();
-        oldPerson.setCpf(cpf);
 
+        Person oldPerson = Person.builder().cpf(cpf).build();
+        Person update = createPerson();
+
+        update.setCpf(cpf);
+        when(personRepository.existsByCpf(cpf)).thenReturn(true);
         when(personRepository.save(oldPerson)).thenReturn(update);
         Person person = personService.update(oldPerson);
 
