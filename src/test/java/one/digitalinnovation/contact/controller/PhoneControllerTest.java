@@ -27,7 +27,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -110,7 +109,8 @@ public class PhoneControllerTest {
     }
 
     @Test
-    public void createInvalidPhoneTest() throws Exception {
+    @DisplayName("Cant create invalid phone")
+    public void cantCreateInvalidPhoneTest() throws Exception {
 
         String json = new ObjectMapper().writeValueAsString(new PhoneDTO());
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders

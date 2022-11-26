@@ -2,10 +2,8 @@ package one.digitalinnovation.contact.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import one.digitalinnovation.contact.domain.entities.Person;
-import one.digitalinnovation.contact.domain.entities.Phone;
 import one.digitalinnovation.contact.domain.rest.controller.PersonController;
 import one.digitalinnovation.contact.domain.rest.dto.personDTO.PersonDTO;
-import one.digitalinnovation.contact.domain.rest.dto.phoneDTO.PhoneDTO;
 import one.digitalinnovation.contact.domain.rest.services.PersonService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,9 +21,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -94,4 +90,33 @@ public class PersonControllerTest {
                 .andExpect(jsonPath("birthDate").value(dto.getBirthDate()))
                 .andExpect(jsonPath("email").value(dto.getEmail()));
     }
+
+    @Test
+    @DisplayName("Should find person by cpf")
+   public void findPersonByIdTest() throws Exception {
+          Person person =  Person
+                   .builder()
+                   .cpf("73788507055")
+                   .birthDate(LocalDate.now())
+                   .email("gabriel@gmail.com")
+                   .name("gabriel gregorio")
+                   .build();
+          BDDMockito.given(personService.findById(person.getCpf())).willReturn(Optional.of(person));
+
+
+       MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+               .get(PERSON_API.concat("/" + person.getCpf()))
+               .accept(APPLICATION_JSON)
+               .contentType(APPLICATION_JSON);
+
+
+       mockMvc
+               .perform(request)
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("cpf").isNotEmpty())
+               .andExpect(jsonPath("cpf").value(createPersonDTO().getCpf()))
+               .andExpect(jsonPath("name").value(createPersonDTO().getName()))
+               .andExpect(jsonPath("birthDate").value(createPersonDTO().getBirthDate()))
+               .andExpect(jsonPath("email").value(createPersonDTO().getEmail()));
+   }
 }
