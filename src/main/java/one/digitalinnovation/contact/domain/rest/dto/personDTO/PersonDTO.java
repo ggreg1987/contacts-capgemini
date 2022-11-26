@@ -5,6 +5,7 @@ import one.digitalinnovation.contact.domain.rest.dto.phoneDTO.PhoneDTO;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PersonDTO {
+public class PersonDTO implements Serializable {
 
     @NotEmpty
     private String cpf;

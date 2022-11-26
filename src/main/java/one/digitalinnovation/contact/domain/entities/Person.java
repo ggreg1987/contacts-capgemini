@@ -29,7 +29,7 @@ public class Person implements Serializable {
     private String email;
     private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "person",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "person",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Phone> phones;
 
     public List<Phone> getPhones() {

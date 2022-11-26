@@ -12,5 +12,5 @@ public interface PersonService {
     Optional<Person> findById(String cpf);
     Page<Person> find(Person person, Pageable pageable);
     void delete(Person person);
-    Person update(Person person);
+    Person update(String cpf,Person person);
 }

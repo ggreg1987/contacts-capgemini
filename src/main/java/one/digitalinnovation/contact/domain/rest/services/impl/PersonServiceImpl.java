@@ -25,7 +25,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person save(Person person) {
-        if(repository.existsByCpf(person.getCpf()) || person == null) {
+        if( person == null) {
             throw new ResponseStatusException(BAD_REQUEST);
         }
         return repository.save(person);
@@ -62,10 +62,15 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person update(Person person) {
+    public Person update(String cpf,Person person) {
         if(!repository.existsByCpf(person.getCpf())) {
-            throw new IllegalArgumentException("Error,wrong cpf");
+            throw new ResponseStatusException(BAD_REQUEST);
         }
-        return repository.save(person);
+         return findById(cpf)
+                 .map(found -> {
+                     found.setCpf(person.getCpf());
+                     return repository.save(person);
+                 }).orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
+
     }
 }

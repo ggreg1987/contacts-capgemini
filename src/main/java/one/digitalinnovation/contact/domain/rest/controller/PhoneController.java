@@ -1,7 +1,7 @@
 package one.digitalinnovation.contact.domain.rest.controller;
+
 import lombok.RequiredArgsConstructor;
 import one.digitalinnovation.contact.domain.entities.Phone;
-import one.digitalinnovation.contact.domain.enums.PhoneType;
 import one.digitalinnovation.contact.domain.rest.dto.phoneDTO.PhoneDTO;
 import one.digitalinnovation.contact.domain.rest.services.PhoneService;
 import org.modelmapper.ModelMapper;
@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
@@ -58,11 +59,8 @@ public class PhoneController {
     }
     @PutMapping("{id}")
     public PhoneDTO update(@PathVariable Long id,@RequestBody @Valid PhoneDTO dto) {
-        return service.findById(id)
-                .map(phone -> {
-                    phone.setId(dto.getId());
-                    service.update(phone);
-                    return modelMapper.map(phone, PhoneDTO.class);
-                }).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+        Phone phone = modelMapper.map(dto, Phone.class);
+        Phone update = service.update(id, phone);
+        return modelMapper.map(update,PhoneDTO.class);
     }
 }

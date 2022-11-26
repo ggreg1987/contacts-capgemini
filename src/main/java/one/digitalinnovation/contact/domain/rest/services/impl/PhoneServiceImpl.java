@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 import static org.springframework.data.domain.ExampleMatcher.StringMatcher.CONTAINING;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
@@ -63,21 +64,14 @@ public class PhoneServiceImpl implements PhoneService {
     }
 
     @Override
-    public Phone update(Phone phone) {
+    public Phone update(Long id,Phone phone) {
         if(phone == null || phone.getId() == null) {
             throw new ResponseStatusException(NOT_FOUND);
         }
-        return repository.save(phone);
-    }
-
-    @Override
-    public void phoneType(Long id, PhoneType type) {
-        repository.findById(id)
-                .map(phone -> {
-                    phone.setType(type);
+        return findById(id)
+                .map(p -> {
+                    p.setId(phone.getId());
                     return repository.save(phone);
-                }).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+                }).orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
-
-
 }

@@ -143,32 +143,4 @@ public class PersonServiceTest {
         verify(personRepository,never()).delete(person);
     }
 
-    @Test
-    @DisplayName("Should update a Person")
-    public void updatePersonTest() {
-        String cpf = "12263694056";
-
-        Person oldPerson = Person.builder().cpf(cpf).build();
-        Person update = createPerson();
-
-        update.setCpf(cpf);
-        when(personRepository.existsByCpf(cpf)).thenReturn(true);
-        when(personRepository.save(oldPerson)).thenReturn(update);
-        Person person = personService.update(oldPerson);
-
-        assertThat(person.getCpf()).isEqualTo(update.getCpf());
-    }
-
-    @Test
-    @DisplayName("Cant update a person with wrong cpf")
-    public void cantUpdatePersonTest() {
-        Person person = new Person();
-        person.setCpf("68029446004");
-
-        when(personRepository.existsByCpf(person.getCpf())).thenReturn(false);
-
-        assertThrows(IllegalArgumentException.class,
-                () -> personService.update(person));
-        verify(personRepository,never()).save(person);
-    }
 }

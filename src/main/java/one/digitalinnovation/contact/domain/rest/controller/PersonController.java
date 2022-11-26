@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,12 +58,10 @@ public class PersonController {
         service.delete(person);
     }
     @PutMapping("{cpf}")
-    public PersonDTO update(@PathVariable String cpf,@RequestBody PersonDTO dto) {
-        return service.findById(cpf)
-                .map(person -> {
-                    person.setCpf(dto.getCpf());
-                    service.update(person);
-                    return modelMapper.map(person, PersonDTO.class);
-                }).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+    @ResponseStatus(OK)
+    public PersonDTO update(@PathVariable String cpf,@RequestBody @Valid PersonDTO dto) {
+        Person person = modelMapper.map(dto, Person.class);
+        Person update = service.update(cpf, person);
+        return modelMapper.map(update,PersonDTO.class);
     }
 }
