@@ -27,10 +27,7 @@ public class Person implements Serializable {
 
     @Column(length = 20,nullable = false)
     private String email;
-
-    @Column(nullable = false)
     private LocalDate birthDate;
-
 
     @OneToMany(mappedBy = "person",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Phone> phones;
@@ -43,6 +40,7 @@ public class Person implements Serializable {
     }
 
     public String getBirthDate() {
-        return LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return birthDate.format(formatter);
     }
 }

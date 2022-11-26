@@ -8,11 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,9 +27,9 @@ public class PersonController {
     @PostMapping
     @ResponseStatus(CREATED)
     public PersonDTO create(@RequestBody PersonDTO dto) {
-        Person person = modelMapper.map(dto, Person.class);
-        Person save = service.save(person);
-        return modelMapper.map(save,PersonDTO.class);
+        Person map = modelMapper.map(dto, Person.class);
+        Person person = service.save(map);
+        return modelMapper.map(person, PersonDTO.class);
     }
 
     @GetMapping("{cpf}")

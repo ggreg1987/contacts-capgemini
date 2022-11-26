@@ -1,7 +1,10 @@
 package one.digitalinnovation.contact.domain.rest.dto.phoneDTO;
 
 import lombok.*;
+import one.digitalinnovation.contact.domain.enums.PhoneType;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotEmpty;
 
 @Getter @Setter
@@ -14,5 +17,6 @@ public class PhoneDTO {
     @NotEmpty
     private String number;
     @NotEmpty
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private PhoneType type;
 }

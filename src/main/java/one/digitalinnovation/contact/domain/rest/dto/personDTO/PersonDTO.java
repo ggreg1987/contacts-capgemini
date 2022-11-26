@@ -3,7 +3,10 @@ package one.digitalinnovation.contact.domain.rest.dto.personDTO;
 import lombok.*;
 import one.digitalinnovation.contact.domain.rest.dto.phoneDTO.PhoneDTO;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter @Setter
@@ -18,7 +21,15 @@ public class PersonDTO {
     private String name;
     @NotEmpty
     private String email;
-    @NotEmpty
     private String birthDate;
-    private List<PhoneDTO> phoneDTOS;
+
+    @Valid
+    @NotEmpty
+    private List<PhoneDTO> phones;
+
+    public LocalDate getBirthDate() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(this.birthDate, formatter);
+    }
 }

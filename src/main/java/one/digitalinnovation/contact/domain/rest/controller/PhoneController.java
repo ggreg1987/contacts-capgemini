@@ -3,7 +3,6 @@ import lombok.RequiredArgsConstructor;
 import one.digitalinnovation.contact.domain.entities.Phone;
 import one.digitalinnovation.contact.domain.enums.PhoneType;
 import one.digitalinnovation.contact.domain.rest.dto.phoneDTO.PhoneDTO;
-import one.digitalinnovation.contact.domain.rest.dto.phoneDTO.PhoneTypeDTO;
 import one.digitalinnovation.contact.domain.rest.services.PhoneService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -65,10 +64,5 @@ public class PhoneController {
                     service.update(phone);
                     return modelMapper.map(phone, PhoneDTO.class);
                 }).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
-    }
-    @PatchMapping("{id}")
-    public void type(@PathVariable Long id,@RequestBody PhoneTypeDTO dto) {
-        String typeDTO = dto.getTypeDTO();
-        service.phoneType(id, PhoneType.valueOf(typeDTO));
     }
 }
