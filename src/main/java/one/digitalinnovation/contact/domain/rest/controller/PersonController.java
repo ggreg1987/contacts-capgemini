@@ -5,14 +5,9 @@ import one.digitalinnovation.contact.domain.entities.Person;
 import one.digitalinnovation.contact.domain.rest.dto.personDTO.PersonDTO;
 import one.digitalinnovation.contact.domain.rest.services.PersonService;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,9 +32,8 @@ public class PersonController {
     @GetMapping("{cpf}")
     @ResponseStatus(OK)
     public PersonDTO findById(@PathVariable String cpf) {
-        return service.findById(cpf)
-                .map(person -> modelMapper.map(person, PersonDTO.class))
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+        Person person = service.findById(cpf);
+        return modelMapper.map(person,PersonDTO.class);
     }
     @GetMapping
     public List<PersonDTO> find(PersonDTO dto) {
@@ -53,9 +47,7 @@ public class PersonController {
     @DeleteMapping("{cpf}")
     @ResponseStatus(NO_CONTENT)
     public void delete(@PathVariable String cpf) {
-        Person person = service.findById(cpf)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
-        service.delete(person);
+       service.delete(cpf);
     }
     @PutMapping("{cpf}")
     @ResponseStatus(OK)
