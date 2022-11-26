@@ -16,7 +16,7 @@ public class PhoneDTO {
     private Long id;
     @NotEmpty
     private String number;
-    @NotEmpty
+
     @Enumerated(EnumType.STRING)
     private PhoneType type;
 }

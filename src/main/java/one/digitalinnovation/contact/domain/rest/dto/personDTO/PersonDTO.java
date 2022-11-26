@@ -28,8 +28,7 @@ public class PersonDTO {
     private List<PhoneDTO> phones;
 
     public LocalDate getBirthDate() {
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return LocalDate.parse(this.birthDate, formatter);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            return LocalDate.parse(this.birthDate, formatter);
     }
 }

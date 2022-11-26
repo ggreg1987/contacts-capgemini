@@ -55,7 +55,7 @@ public class PhoneControllerTest {
     private PhoneDTO createPhoneDTO() {
         return PhoneDTO.builder()
                 .id(1L)
-                .type("HOME")
+                .type(PhoneType.HOME)
                 .number("323212321")
                 .build();
     }
@@ -91,7 +91,7 @@ public class PhoneControllerTest {
 
         PhoneDTO phoneDTO = PhoneDTO
                 .builder().number("323212321")
-                .id(1L).type("HOME").build();
+                .id(1L).type(PhoneType.HOME).build();
         String json = new ObjectMapper().writeValueAsString(phoneDTO);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -104,7 +104,7 @@ public class PhoneControllerTest {
                 .perform(request)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").isNotEmpty())
-                .andExpect(jsonPath("type").value(phoneDTO.getType()))
+                .andExpect(jsonPath("type").value(phoneDTO.getType().name()))
                 .andExpect(jsonPath("number").value(phoneDTO.getNumber()));
     }
 
@@ -148,7 +148,7 @@ public class PhoneControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(id))
                 .andExpect(jsonPath("number").value(createPhoneDTO().getNumber()))
-                .andExpect(jsonPath("type").value(createPhoneDTO().getType()));
+                .andExpect(jsonPath("type").value(createPhoneDTO().getType().name()));
     }
 
     @Test
@@ -251,7 +251,7 @@ public class PhoneControllerTest {
                 .perform(request)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("number").value(createPhoneDTO().getNumber()))
-                .andExpect(jsonPath("type").value(createPhoneDTO().getType()));
+                .andExpect(jsonPath("type").value(createPhoneDTO().getType().name()));
     }
 
     @Test
