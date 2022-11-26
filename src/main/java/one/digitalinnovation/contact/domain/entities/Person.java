@@ -39,8 +39,8 @@ public class Person implements Serializable {
         return this.phones;
     }
 
-    public String getBirthDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return birthDate.format(formatter);
-    }
+//    public String getBirthDate() {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//        return birthDate.format(formatter);
+//    }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,14 +41,13 @@ public class PhoneController {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
     @GetMapping
-    public Page<PhoneDTO> find(PhoneDTO dto, Pageable pageable) {
+    public List<PhoneDTO> find(PhoneDTO dto) {
         Phone phone = modelMapper.map(dto, Phone.class);
-        Page<Phone> phones = service.find(phone, pageable);
-        List<PhoneDTO> dtoList = phones.getContent()
+        List<Phone> phoneList = service.find(phone);
+        return phoneList
                 .stream()
-                .map(entity -> modelMapper.map(entity, PhoneDTO.class))
+                .map(list -> modelMapper.map(list,PhoneDTO.class))
                 .collect(Collectors.toList());
-        return new PageImpl<>(dtoList,pageable,phones.getTotalElements());
     }
 
     @DeleteMapping("{id}")

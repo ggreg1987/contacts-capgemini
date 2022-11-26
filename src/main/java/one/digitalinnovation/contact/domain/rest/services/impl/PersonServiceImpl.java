@@ -6,16 +6,14 @@ import one.digitalinnovation.contact.domain.repository.PersonRepository;
 import one.digitalinnovation.contact.domain.rest.services.PersonService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.data.domain.ExampleMatcher.StringMatcher.CONTAINING;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +38,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Page<Person> find(Person person, Pageable pageable) {
+    public List<Person> find(Person person) {
 
         ExampleMatcher exampleMatcher = ExampleMatcher
                 .matching()
@@ -49,7 +47,7 @@ public class PersonServiceImpl implements PersonService {
 
         Example example = Example.of(person, exampleMatcher);
 
-        return repository.findAll(example,pageable);
+        return repository.findAll(example);
 
     }
 
