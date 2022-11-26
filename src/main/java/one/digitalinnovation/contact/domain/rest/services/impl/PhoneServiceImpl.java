@@ -25,17 +25,18 @@ public class PhoneServiceImpl implements PhoneService {
     @Override
     public Phone save(Phone phone) {
         if(phone == null ) {
-            throw new RuntimeException("Cant be save an empty Phone");
+            throw new ResponseStatusException(BAD_REQUEST);
         }
         return repository.save(phone);
     }
 
     @Override
-    public Optional<Phone> findById(Long id) {
+    public Phone findById(Long id) {
         if(id == null) {
-            throw new RuntimeException("Error, cant find phone");
+            throw new ResponseStatusException(BAD_REQUEST);
         }
-        return repository.findById(id);
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Override
@@ -53,19 +54,23 @@ public class PhoneServiceImpl implements PhoneService {
     }
 
     @Override
-    public void delete(Phone phone) {
-        if(phone == null || phone.getId() == null) {
-           throw new IllegalArgumentException("Phone cant be null");
+    public void delete(Long id) {
+        if(!repository.existsById(id)) {
+           throw new ResponseStatusException(NOT_FOUND);
         }
-        repository.delete(phone);
+        repository.findById(id)
+                .map(phone -> {
+                    repository.delete(phone);
+                    return phone;
+                }).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Override
     public Phone update(Long id,Phone phone) {
-        if(phone == null || phone.getId() == null) {
-            throw new ResponseStatusException(NOT_FOUND);
+        if(!repository.existsById(id)) {
+            throw new ResponseStatusException(BAD_REQUEST);
         }
-        return findById(id)
+        return repository.findById(id)
                 .map(p -> {
                     p.setId(phone.getId());
                     return repository.save(phone);

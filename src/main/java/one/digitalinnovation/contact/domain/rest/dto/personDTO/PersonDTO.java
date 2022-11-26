@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -22,14 +23,14 @@ public class PersonDTO implements Serializable {
     private String name;
     @NotEmpty
     private String email;
-    private String birthDate;
+    private LocalDate birthDate = LocalDate.now();
 
     @Valid
     @NotEmpty
     private List<PhoneDTO> phones;
 
-//    public LocalDate getBirthDate() {
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//            return LocalDate.parse(this.birthDate, formatter);
+//    public String getBirthDate() {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//        return birthDate.format(formatter);
 //    }
 }
