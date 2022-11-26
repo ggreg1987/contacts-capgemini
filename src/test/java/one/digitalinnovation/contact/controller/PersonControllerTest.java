@@ -219,6 +219,25 @@ public class PersonControllerTest {
                .andExpect(jsonPath("cpf").value(createPersonDTO().getCpf()))
                .andExpect(jsonPath("name").value(createPersonDTO().getName()))
                .andExpect(jsonPath("email").value(createPersonDTO().getEmail()));
+   }
 
+   @Test
+   @DisplayName("Cant update a person")
+   public void cantUpdatePersonTest() throws Exception {
+       String cpf = "73788507055";
+
+       String json = new ObjectMapper().writeValueAsString(createPersonDTO());
+
+       BDDMockito.given(personService.findById(cpf)).willReturn(Optional.empty());
+
+       MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+               .put(PERSON_API.concat("/" + cpf))
+               .accept(APPLICATION_JSON)
+               .contentType(APPLICATION_JSON)
+               .content(json);
+
+       mockMvc
+               .perform(request)
+               .andExpect(status().isNotFound());
    }
 }
