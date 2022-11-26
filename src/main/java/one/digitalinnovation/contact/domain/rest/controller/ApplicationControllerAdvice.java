@@ -15,5 +15,5 @@ public class ApplicationControllerAdvice {
         String message = ex.getMessage();
         return new ApiErrors(message);
     }
-    
+
 }
