@@ -22,7 +22,7 @@ public class PersonDTO implements Serializable {
     private String name;
     @NotEmpty
     private String email;
-    private LocalDate birthDate = LocalDate.now();
+    private String birthDate;
 
     @Valid
     @NotEmpty
