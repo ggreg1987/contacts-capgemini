@@ -171,4 +171,20 @@ public class PersonControllerTest {
                .perform(request)
                .andExpect(status().isNoContent());
    }
+
+   @Test
+   @DisplayName("Cant delete a person wth wrong cpf")
+   public void cantDeletePersonTest() throws Exception {
+
+       BDDMockito.given(personService.findById(Mockito.anyString()))
+               .willReturn(Optional.empty());
+
+       MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+               .delete(PERSON_API.concat("/" + 1))
+               .accept(APPLICATION_JSON);
+
+       mockMvc
+               .perform(request)
+               .andExpect(status().isNotFound());
+   }
 }
