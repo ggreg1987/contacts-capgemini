@@ -2,7 +2,6 @@ package one.digitalinnovation.contact.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import one.digitalinnovation.contact.domain.entities.Person;
-import one.digitalinnovation.contact.domain.entities.Phone;
 import one.digitalinnovation.contact.domain.rest.controller.PersonController;
 import one.digitalinnovation.contact.domain.rest.dto.personDTO.PersonDTO;
 import one.digitalinnovation.contact.domain.rest.services.PersonService;
@@ -134,7 +133,6 @@ public class PersonControllerTest {
                    .name("gabriel gregorio")
                    .build();
 
-
        BDDMockito.given(personService.find(Mockito.any(Person.class),
                        Mockito.any(Pageable.class)))
                .willReturn(new PageImpl<Person>(Arrays.asList(person),
@@ -154,5 +152,23 @@ public class PersonControllerTest {
                .andExpect(jsonPath("totalElements").value(1))
                .andExpect(jsonPath("pageable.pageSize").value(20))
                .andExpect(jsonPath("pageable.pageNumber").value(0));
+   }
+
+   @Test
+   @DisplayName("Should delete a person")
+   public void deletePersonTest() throws Exception {
+
+        Person person = Person.builder().cpf("73788507055").build();
+
+       BDDMockito.given(personService.findById(Mockito.anyString()))
+               .willReturn(Optional.of(person));
+
+       MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+               .delete(PERSON_API.concat("/" + 1))
+               .accept(APPLICATION_JSON);
+
+       mockMvc
+               .perform(request)
+               .andExpect(status().isNoContent());
    }
 }

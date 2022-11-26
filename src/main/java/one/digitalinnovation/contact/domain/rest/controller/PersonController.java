@@ -52,6 +52,7 @@ public class PersonController {
         return new PageImpl<>(dtoList,pageable,personPage.getTotalElements());
     }
     @DeleteMapping("{cpf}")
+    @ResponseStatus(NO_CONTENT)
     public void delete(@PathVariable String cpf) {
         Person person = service.findById(cpf)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
