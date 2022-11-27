@@ -23,6 +23,7 @@ import java.util.Optional;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -108,6 +109,21 @@ public class PhoneServiceTest {
 
         assertThrows(ResponseStatusException.class,
                 () -> service.delete(id));
+
+    }
+
+    @Test
+    @DisplayName("Should delete the phone by id")
+    public void deletePhoneTest() {
+
+        Phone phone = Phone
+                .builder().id(1L).build();
+
+        when(repository.existsById(phone.getId())).thenReturn(true);
+        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+        assertDoesNotThrow(() -> service.delete(phone.getId()));
+
+        verify(repository,times(1)).delete(phone);
 
     }
 
