@@ -20,8 +20,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
@@ -78,4 +79,15 @@ public class PersonServiceTest {
                 () -> service.findById(Mockito.anyString()));
     }
 
+    @Test
+    @DisplayName("Delete a person by cpf")
+    public void deletePersonByCpf() {
+        String cpf = createPerson.getCpf();
+
+        when(repository.existsByCpf(cpf)).thenReturn(true);
+        when(repository.findByCpf(cpf)).thenReturn(Optional.of(createPerson));
+        assertDoesNotThrow(() -> service.delete(cpf));
+
+        verify(repository, times(1)).delete(createPerson);
+    }
 }
