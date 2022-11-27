@@ -114,7 +114,7 @@ public class PhoneServiceTest {
 
     @Test
     @DisplayName("Should delete the phone by id")
-    public void deletePhoneTest() {
+    public void deletePhoneByIdTest() {
 
         Phone phone = Phone
                 .builder().id(1L).build();
@@ -127,4 +127,19 @@ public class PhoneServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Cant delete the phone with wrong id")
+    public void cantDeletePhoneByIdTest() {
+
+        Phone phone = Phone
+                .builder().id(1L).build();
+
+        when(repository.existsById(phone.getId())).thenReturn(false);
+
+        assertThrows(ResponseStatusException.class,
+                () -> service.delete(phone.getId()));
+
+        verify(repository,never()).delete(phone);
+
+    }
 }
