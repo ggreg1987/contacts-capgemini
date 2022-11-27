@@ -142,4 +142,23 @@ public class PhoneServiceTest {
         verify(repository,never()).delete(phone);
 
     }
+
+    @Test
+    @DisplayName("Should update the phone by id")
+    public void updatePhoneTest() {
+        Long id = 1L;
+        Phone phone = Phone.builder().id(id).number("54321").build();
+        Phone update = createNewPhone();
+        update.setId(phone.getId());
+
+        when(repository.existsById(id)).thenReturn(true);
+        when(repository.findById(id)).thenReturn(Optional.of(phone));
+        when(repository.save(phone)).thenReturn(update);
+        Phone updated = service.update(id, phone);
+
+        assertThat(updated.getId()).isEqualTo(update.getId());
+        assertThat(updated.getNumber()).isEqualTo(update.getNumber());
+
+
+    }
 }
