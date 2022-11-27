@@ -6,21 +6,23 @@ import one.digitalinnovation.contact.domain.enums.PhoneType;
 import one.digitalinnovation.contact.domain.repository.PhoneRepository;
 import one.digitalinnovation.contact.domain.rest.services.PhoneService;
 import one.digitalinnovation.contact.domain.rest.services.impl.PhoneServiceImpl;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.junit.jupiter.api.Assertions.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -173,5 +175,14 @@ public class PhoneServiceTest {
                 () -> service.update(id,phone));
 
         verify(repository,never()).save(phone);
+    }
+
+    @Test
+    @DisplayName("Should show all phones")
+    public void findAllTest() {
+        Phone phone = createNewPhone();
+        List<Phone> phones = service.find(phone);
+
+        assertThat(phones.size()).isEqualTo(0);
     }
 }
