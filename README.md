@@ -5,7 +5,9 @@ Desafio realizado pelo curso de bootcamp da <a href = "https://www.dio.me/">DIO<
 <li>Api-Restful</li>
 <li>SOLID</li>
 <li>DTO</li>
+<li>Lombok</li>
 <li>JPA</li>
+<li>H2 Database</li>
 <li>ModelMapper</li>
 <li>Junit5</li>
 <li>Mockito</li>
