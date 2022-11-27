@@ -124,4 +124,15 @@ public class PersonServiceTest {
         verify(repository,times(1)).save(person);
 
     }
+
+    @Test
+    @DisplayName("Cant update a person with wrong cpf")
+    public void cantUpdatePersonTest() {
+
+        when(repository.existsByCpf(Mockito.anyString())).thenReturn(false);
+        assertThrows(ResponseStatusException.class,
+                () -> service.update(createPerson.getCpf(),createPerson));
+
+        verify(repository,never()).save(createPerson);
+    }
 }
