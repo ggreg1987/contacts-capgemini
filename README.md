@@ -17,7 +17,7 @@ Desafio realizado pelo curso de bootcamp da <a href = "https://www.dio.me/">DIO<
 <h2> Bugs e problemas no desenvolvimento: </h2>
 <ul>
   <li>Tive problemas no início pois quando iniciei os testes, havia esquecido de colocar todas as exceptions 
-e também de criar o handleException para controlar as exceções e exibir para o cliente. </li>
+e também de criar o handleException para controlar as exceções e exibir para o cliente, assim tive que refatorar todo o projeto. </li>
   </br>
   </br>
   <li> Tive problema com o ModelMapper e o LocalDate, sempre consegui manipular o LocalDate porém, acredito que
