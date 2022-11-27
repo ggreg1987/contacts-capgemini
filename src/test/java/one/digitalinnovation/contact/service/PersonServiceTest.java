@@ -9,14 +9,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
@@ -57,12 +61,21 @@ public class PersonServiceTest {
         String cpf = createPerson.getCpf();
 
         when(repository.existsByCpf(cpf)).thenReturn(true);
-        when(repository.findByCpf(cpf)).thenReturn(Optional.ofNullable(createPerson));
+        when(repository.findByCpf(cpf)).thenReturn(Optional.of(createPerson));
 
         Person person = service.findById(cpf);
 
         assertThat(person.getCpf()).isEqualTo(createPerson.getCpf());
+    }
 
+    @Test
+    @DisplayName("Cant find person by wrong cpf")
+    public void cantFindPersonByCpf() {
+
+        when(repository.existsByCpf(Mockito.anyString())).thenReturn(false);
+
+        assertThrows(ResponseStatusException.class,
+                () -> service.findById(Mockito.anyString()));
     }
 
 }
