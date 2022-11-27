@@ -50,6 +50,19 @@ public class PersonServiceTest {
         assertThat(save.getCpf()).isEqualTo(person.getCpf());
     }
 
+    @Test
+    @DisplayName("Should find a person by the cpf")
+    public void findPersonByCpfTest() {
 
+        String cpf = createPerson.getCpf();
+
+        when(repository.existsByCpf(cpf)).thenReturn(true);
+        when(repository.findByCpf(cpf)).thenReturn(Optional.ofNullable(createPerson));
+
+        Person person = service.findById(cpf);
+
+        assertThat(person.getCpf()).isEqualTo(createPerson.getCpf());
+
+    }
 
 }
