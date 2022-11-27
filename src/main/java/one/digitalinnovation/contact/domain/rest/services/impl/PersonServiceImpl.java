@@ -9,6 +9,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.data.domain.ExampleMatcher.StringMatcher.CONTAINING;
@@ -23,7 +24,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person save(Person person) {
-      if(repository.existsByCpf(person.getCpf())) {
+      if(repository.existsByCpf(person.getCpf()) ||
+              !person.getBirthDate().equals(LocalDate.now())) {
           throw new ResponseStatusException(BAD_REQUEST);
       }
       return repository.save(person);
