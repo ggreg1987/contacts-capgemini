@@ -43,7 +43,7 @@ public class PhoneServiceTest {
         service = new PhoneServiceImpl(repository);
     }
 
-    private Person createNewPerson() {
+    public Person createNewPerson() {
         return Person
                 .builder()
                 .cpf("35617385089")
