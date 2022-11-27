@@ -159,6 +159,19 @@ public class PhoneServiceTest {
         assertThat(updated.getId()).isEqualTo(update.getId());
         assertThat(updated.getNumber()).isEqualTo(update.getNumber());
 
+    }
 
+    @Test
+    @DisplayName("Cant update the phone with wrong id")
+    public void cantUpdatePhoneTest() {
+        Long id = 5L;
+        Phone phone = createNewPhone();
+
+        when(repository.existsById(Mockito.anyLong())).thenReturn(false);
+
+        assertThrows(ResponseStatusException.class,
+                () -> service.update(id,phone));
+
+        verify(repository,never()).save(phone);
     }
 }
