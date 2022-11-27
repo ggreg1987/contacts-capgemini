@@ -8,6 +8,8 @@ Desafio realizado pelo curso de bootcamp da <a href = "https://www.dio.me/">DIO<
 <li>ModelMapper</li>
 <li>Junit5</li>
 <li>Mockito</li>
+<li>Testes Unitários</li>
 <li>Heroku</li>
 <li>Swagger - http://localhost:8080/swagger-ui/index.html</li>
 </ul>
+
