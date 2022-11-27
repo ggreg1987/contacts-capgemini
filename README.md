@@ -14,3 +14,16 @@ Desafio realizado pelo curso de bootcamp da <a href = "https://www.dio.me/">DIO<
 <li>Swagger - http://localhost:8080/swagger-ui/index.html</li>
 </ul>
 
+<h2> Bugs e problemas no desenvolvimento: </h2>
+<ul>
+  <li>Tive problemas no início pois quando iniciei os testes, havia esquecido de colocar todas as exceptions 
+e também de criar o handleException para controlar as exceções e exibir para o cliente. </li>
+  </br>
+  </br>
+  <li> Tive problema com o ModelMapper e o LocalDate, sempre consegui manipular o LocalDate porém, acredito que
+  com o ModelMapper ele não consiga fazer essa diferença por trás, ele até faz mas quando fui testar o listAll
+  falhou várias vezes e acabei retirando o Pageable e deixando o listAll sem ser paginado. O LocalDate pega
+  a data atual sem a possibilitade de edição, como tem tempo para terminar o bootcamp, deixarei isso para resolver
+  outro dia. </li>
+
+
