@@ -77,6 +77,7 @@ public class PersonServiceTest {
 
         assertThrows(ResponseStatusException.class,
                 () -> service.findById(Mockito.anyString()));
+
     }
 
     @Test
@@ -89,5 +90,38 @@ public class PersonServiceTest {
         assertDoesNotThrow(() -> service.delete(cpf));
 
         verify(repository, times(1)).delete(createPerson);
+    }
+
+    @Test
+    @DisplayName("Cant delete a person with wrong cpf")
+    public void cantDeletePersonByCpfTest() {
+
+        String cpf = createPerson.getCpf();
+
+        when(repository.existsByCpf(cpf)).thenReturn(false);
+        assertThrows(ResponseStatusException.class,
+                () -> service.delete(cpf));
+
+        verify(repository,never()).delete(createPerson);
+    }
+
+    @Test
+    @DisplayName("Should update a person ")
+    public void updatePersonTest() {
+
+        Person person = Person.builder().cpf("49988490003").build();
+        Person update = createPerson;
+        update.setCpf(person.getCpf());
+
+        when(repository.existsByCpf(person.getCpf())).thenReturn(true);
+        when(repository.findByCpf(person.getCpf())).thenReturn(Optional.of(person));
+        when(repository.save(person)).thenReturn(update);
+
+        Person personSave = service.update(person.getCpf(), person);
+
+        assertThat(personSave.getCpf()).isEqualTo(update.getCpf());
+
+        verify(repository,times(1)).save(person);
+
     }
 }
