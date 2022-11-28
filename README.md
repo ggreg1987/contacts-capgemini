@@ -31,7 +31,7 @@ e também de criar o handleException para controlar as exceções e exibir para 
   <li>Tive um grande problema com o LocalDate, não conseguia passar ele para String no formato dd/MM/yyyy, só conseguia a hora local com o .now(),
   de alguma forma o ModelMapper não consegue fazer essa conversão automática e tive que salvar na mão sem usar o ModelMapper e deu certo, foi necessário 
   também a anotação @JsonFormat(pattern = "dd/MM/yyyy") na entidade para o postman entender que havia mudança no json do formato  da data. 
-  Foi um grande aprendizado, nem sempre podemos contar com os frameworks.</li>
+  Foi um grande aprendizado, nem sempre podemos contar com as bibliotecas.</li>
   
   
 
