@@ -26,5 +26,12 @@ e também de criar o handleException para controlar as exceções e exibir para 
   <li> Tive problemas com o Swagger, não sei porque ainda não corrigiram isso, ele não acompanha a versão do springboot
   tendo assim que fazer o downgrade ou utilizar essa linha de código no properties, spring.mvc.pathmatch.matching-strategy=ant_path_matcher
   </li>
+  </br>
+  </br>
+  <li>Tive um grande problema com o LocalDate, não conseguia passar ele para String no formato dd/MM/yyy, só conseguia a hora local com o .now(),
+  de alguma forma o ModelMapper não consegue fazer essa conversão automática e tive que salvar na mão sem usar o ModelMapper e deu certo, foi necessário 
+  também a anotação @JsonFormat(pattern = "dd/MM/yyyy") na entidade para o postman entender que havia mudança no formato do LocalDate. </li>
+  
+  
 
 
