@@ -23,13 +23,6 @@ Desafio realizado pelo curso de bootcamp da <a href = "https://www.dio.me/">DIO<
 e também de criar o handleException para controlar as exceções e exibir para o cliente, assim tive que refatorar todo o projeto. </li>
   </br>
   </br>
-  <li> Tive problemas com o ModelMapper e o LocalDate, sempre consegui manipular o LocalDate porém, acredito que
-  com o ModelMapper ele não consiga fazer essa diferença por trás, ele até faz mas quando fui testar o listAll
-  falhou várias vezes e acabei retirando o Pageable e deixando o listAll sem ser paginado. O LocalDate pega
-  a data atual sem a possibilitade de edição, como tem tempo para terminar o bootcamp, deixarei isso para resolver
-  outro dia. </li>
-  </br>
-  </br>
   <li> Tive problemas com o Swagger, não sei porque ainda não corrigiram isso, ele não acompanha a versão do springboot
   tendo assim que fazer o downgrade ou utilizar essa linha de código no properties, spring.mvc.pathmatch.matching-strategy=ant_path_matcher
   </li>
