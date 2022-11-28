@@ -3,6 +3,7 @@ Desafio realizado pelo curso de bootcamp da <a href = "https://www.dio.me/">DIO<
 <h5> Realizei o projeto utilizando as ferramentas e conhecimentos: </h5>
 <ul>
 <li>Api-Restful</li>
+<li>Clean-Architecture</li>
 <li>SOLID</li>
 <li>DTO</li>
 <li>Lombok</li>
