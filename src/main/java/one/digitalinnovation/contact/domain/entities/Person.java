@@ -1,5 +1,6 @@
 package one.digitalinnovation.contact.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -27,6 +28,7 @@ public class Person implements Serializable {
 
     @Column(length = 20,nullable = false)
     private String email;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "person",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
@@ -38,9 +40,4 @@ public class Person implements Serializable {
         }
         return this.phones;
     }
-
-//    public String getBirthDate() {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//        return birthDate.format(formatter);
-//    }
 }

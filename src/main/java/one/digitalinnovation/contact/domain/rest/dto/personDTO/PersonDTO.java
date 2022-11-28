@@ -23,14 +23,14 @@ public class PersonDTO implements Serializable {
     private String name;
     @NotEmpty
     private String email;
-    private LocalDate birthDate = LocalDate.now();
+    private String birthDate;
 
     @Valid
     @NotEmpty
     private List<PhoneDTO> phones;
 
 //    public String getBirthDate() {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//        return birthDate.format(formatter);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        return birthDate.format(birthDate,formatter);
 //    }
 }

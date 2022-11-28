@@ -24,8 +24,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person save(Person person) {
-      if(repository.existsByCpf(person.getCpf()) ||
-              !person.getBirthDate().equals(LocalDate.now())) {
+      if(repository.existsByCpf(person.getCpf())) {
           throw new ResponseStatusException(BAD_REQUEST);
       }
       return repository.save(person);
